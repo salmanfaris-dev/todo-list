@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan Dasar</title>
+    <link rel="stylesheet" href="../src/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <span class="logo">SalsNote</span>
+          <button class="dark-mode-btn" id="darkModeBtn" aria-label="Toggle dark mode">🌙</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="container">
+          <div class="note-container">
+            <h1 class="title">Latihan Dasar</h1>
+            <form class="form" action="">
+              <input
+                type="text"
+                id="noteInput"
+                class="note-input"
+                placeholder="Tulis Catatan Anda..."
+              />
+              <button class="btn" id="noteBtn">Tambah</button>
+            </form>
+            <h2 class="note-title">Catatan Saya</h2>
+            <ul class="note-list" id="noteList"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../src/js/script.js"></script>
+  </body>
+</html>

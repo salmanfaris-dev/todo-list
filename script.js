@@ -25,6 +25,14 @@ function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
+function createButton(text, ...classNames) {
+  const button = createElement("button");
+  button.textContent = text;
+  button.classList.add(...classNames);
+
+  return button;
+}
+
 function createNoteElement(note) {
   const li = createElement("li");
   li.classList.add("list", "list-animation");
@@ -39,6 +47,8 @@ function createNoteElement(note) {
   completeCheckbox.type = "checkbox";
   completeCheckbox.classList.add("complete-checkbox");
   completeCheckbox.checked = note.completed;
+  completeCheckbox.id = `edit-${note.id}`
+  completeCheckbox.name = `edit-${note.id}`
 
   const span = createElement("span");
   span.classList.add("text-span");
@@ -46,14 +56,6 @@ function createNoteElement(note) {
 
   if (note.completed) {
     span.classList.add("completed");
-  }
-
-  function createButton(text, ...classNames) {
-    const button = createElement("button");
-    button.textContent = text;
-    button.classList.add(...classNames);
-
-    return button;
   }
 
   const editBtn = createButton("✏️", "button-action", "action-hover", "ml-8");
@@ -71,26 +73,32 @@ function createNoteElement(note) {
   }, 10);
 
   //  Edit note
+  let editInput;
   editBtn.addEventListener("click", () => {
-    const editInput = document.createElement("input");
-    editInput.classList.add("text-input");
-    editInput.value = span.textContent;
-    li.replaceChild(editInput, span);
-    editBtn.textContent = "💾";
+    if (editBtn.textContent === "✏️") {
+      editInput = createElement("input");
+      editInput.classList.add("text-input");
+      editInput.value = span.textContent;
+      editInput.id = `edit-${note.id}`
+      editInput.name = `edit-${note.id}`
 
-    editInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        saveEdit(e);
-      }
-    });
+      textContainer.replaceChild(editInput, span);
+      editBtn.textContent = "💾";
 
-    editBtn.addEventListener("click", saveEdit);
+      editInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          saveEdit(e);
+        }
+      });
+    } else {
+      saveEdit();
+    }
 
     function saveEdit() {
       const newText = editInput.value.trim();
       if (!newText) return;
       span.textContent = newText;
-      li.replaceChild(span, editInput);
+      textContainer.replaceChild(span, editInput);
 
       notes = notes.map((item) => {
         if (item.id === note.id) {
@@ -104,7 +112,6 @@ function createNoteElement(note) {
 
       saveNotes();
       editBtn.textContent = "✏️";
-      editBtn.removeEventListener("click", saveEdit);
     }
   });
 

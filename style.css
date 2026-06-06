@@ -183,9 +183,6 @@ body.dark-mode .note-container {
 }
 
 .list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
   padding: 1rem 1.5rem;
   background-color: white;
@@ -209,6 +206,14 @@ body.dark-mode .note-container {
   align-items: center;
   gap: 1rem;
   margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* List container */
+.list-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Text container */
@@ -258,7 +263,7 @@ body.dark-mode .note-container {
   opacity: 0.6;
 }
 
-/* Button */
+/* Button-container */
 .button-container {
   display: flex;
   justify-content: center;
@@ -289,6 +294,11 @@ body.dark-mode .note-container {
 
 .action-hover:hover {
   background-color: #f1f5f9;
+}
+
+/* Date container */
+.date-element{
+  font-size: 0.8rem;
 }
 
 /* Utility */

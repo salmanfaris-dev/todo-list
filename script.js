@@ -38,8 +38,8 @@ function createNoteElement(note) {
   const li = createElement("li");
   li.classList.add("list", "list-animation");
 
-  const buttonContainer = createElement("div");
-  buttonContainer.classList.add("button-container");
+  const listContainer = createElement("div");
+  listContainer.classList.add("list-container");
 
   const textContainer = createElement("div");
   textContainer.classList.add("text-container");
@@ -59,15 +59,32 @@ function createNoteElement(note) {
     span.classList.add("completed");
   }
 
+  const buttonContainer = createElement("div");
+  buttonContainer.classList.add("button-container");
+
   const editBtn = createButton("✏️", "button-action", "action-hover", "ml-8");
   const deleteBtn = createButton("❌", "button-action", "action-hover");
 
-  li.appendChild(textContainer);
-  li.appendChild(buttonContainer);
+  const dateContainer = createElement("div");
+  dateContainer.classList.add("date-container");
+
+  const date = new Date(note.createdAt);
+  const formattedDate = date.toLocaleString("id-ID");
+
+  const dateElement = createElement("p");
+  dateElement.classList.add("date-element");
+  dateElement.textContent = formattedDate;
+
+  li.appendChild(listContainer);
+  listContainer.appendChild(textContainer);
   textContainer.appendChild(completeCheckbox);
   textContainer.appendChild(span);
+  listContainer.appendChild(buttonContainer);
   buttonContainer.appendChild(editBtn);
   buttonContainer.appendChild(deleteBtn);
+
+  li.appendChild(dateContainer);
+  dateContainer.appendChild(dateElement);
 
   setTimeout(() => {
     li.classList.add("active");
@@ -131,7 +148,7 @@ function createNoteElement(note) {
 
     span.classList.toggle("completed", completeCheckbox.checked);
     saveNotes();
-    updateStats()
+    updateStats();
   });
 
   // Delete note
@@ -152,9 +169,8 @@ notes.forEach((note) => {
   const li = createNoteElement(note);
   noteList.appendChild(li);
 });
-updateStats()
+updateStats();
 updateNoteTitle();
-
 
 function updateNoteTitle() {
   if (notes.length > 0) {
@@ -181,7 +197,12 @@ function updateStats() {
 function addNote(e) {
   e.preventDefault();
   const noteText = noteInput.value.trim();
-  const newNote = { id: Date.now(), text: noteText, completed: false };
+  const newNote = {
+    id: Date.now(),
+    text: noteText,
+    completed: false,
+    createdAt: Date.now(),
+  };
   if (!noteText) return;
 
   const li = createNoteElement(newNote);
@@ -190,7 +211,7 @@ function addNote(e) {
   notes.push(newNote);
   saveNotes();
   noteInput.value = "";
-  updateStats()
+  updateStats();
   updateNoteTitle();
 }
 

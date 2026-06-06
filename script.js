@@ -1,8 +1,9 @@
-const id = (id) => document.getElementById(id);
-const noteInput = id("noteInput");
-const noteBtn = id("noteBtn");
-const noteList = id("noteList");
-const darkModeBtn = id("darkModeBtn");
+const getId = (id) => document.getElementById(id);
+const noteInput = getId("noteInput");
+const noteBtn = getId("noteBtn");
+const noteList = getId("noteList");
+const darkModeBtn = getId("darkModeBtn");
+const noteTitle = getId("noteTitle");
 const createElement = (element) => document.createElement(element);
 
 if (localStorage.getItem("darkMode") === "true") {
@@ -47,8 +48,8 @@ function createNoteElement(note) {
   completeCheckbox.type = "checkbox";
   completeCheckbox.classList.add("complete-checkbox");
   completeCheckbox.checked = note.completed;
-  completeCheckbox.id = `edit-${note.id}`
-  completeCheckbox.name = `edit-${note.id}`
+  completeCheckbox.id = `complete-${note.id}`;
+  completeCheckbox.name = `complete-${note.id}`;
 
   const span = createElement("span");
   span.classList.add("text-span");
@@ -74,13 +75,15 @@ function createNoteElement(note) {
 
   //  Edit note
   let editInput;
-  editBtn.addEventListener("click", () => {
+  editBtn.addEventListener("click", noteEdit);
+
+  function noteEdit() {
     if (editBtn.textContent === "✏️") {
       editInput = createElement("input");
       editInput.classList.add("text-input");
       editInput.value = span.textContent;
-      editInput.id = `edit-${note.id}`
-      editInput.name = `edit-${note.id}`
+      editInput.id = `edit-${note.id}`;
+      editInput.name = `edit-${note.id}`;
 
       textContainer.replaceChild(editInput, span);
       editBtn.textContent = "💾";
@@ -113,9 +116,9 @@ function createNoteElement(note) {
       saveNotes();
       editBtn.textContent = "✏️";
     }
-  });
+  }
 
-  completeCheckbox.addEventListener("click", () => {
+  completeCheckbox.addEventListener("change", () => {
     notes = notes.map((item) => {
       if (item.id === note.id) {
         return {
@@ -128,6 +131,7 @@ function createNoteElement(note) {
 
     span.classList.toggle("completed", completeCheckbox.checked);
     saveNotes();
+    updateStats()
   });
 
   // Delete note
@@ -137,6 +141,8 @@ function createNoteElement(note) {
     notes = notes.filter((item) => item.id !== note.id);
 
     saveNotes();
+    updateStats();
+    updateNoteTitle();
   });
 
   return li;
@@ -146,6 +152,31 @@ notes.forEach((note) => {
   const li = createNoteElement(note);
   noteList.appendChild(li);
 });
+updateStats()
+updateNoteTitle();
+
+
+function updateNoteTitle() {
+  if (notes.length > 0) {
+    noteTitle.textContent = "Catatan Saya";
+  } else {
+    noteTitle.textContent = "";
+  }
+}
+
+function updateStats() {
+  const totalNotesElement = getId("totalNotes");
+  const remainingNotesElement = getId("remainingNotes");
+  const completedNotesElement = getId("completedNotes");
+
+  const totalNotes = notes.length;
+  const remainingNotes = notes.filter((note) => !note.completed).length;
+  const completedNotes = notes.filter((note) => note.completed).length;
+
+  totalNotesElement.textContent = `📝 Total: ${totalNotes}`;
+  remainingNotesElement.textContent = `⏳ Remaining: ${remainingNotes}`;
+  completedNotesElement.textContent = `✅ completed: ${completedNotes}`;
+}
 
 function addNote(e) {
   e.preventDefault();
@@ -159,11 +190,13 @@ function addNote(e) {
   notes.push(newNote);
   saveNotes();
   noteInput.value = "";
+  updateStats()
+  updateNoteTitle();
 }
 
 noteBtn.addEventListener("click", addNote);
 
-noteInput.addEventListener("keypress", (e) => {
+noteInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     addNote(e);
   }

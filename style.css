@@ -31,7 +31,9 @@ body {
   background-color: var(--bg-light);
   color: var(--text-light);
   line-height: 1.5;
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 header {
@@ -48,6 +50,12 @@ li {
   max-width: 1200px;
   margin-inline: auto;
   padding: 0 1.5rem;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 0 1rem;
 }
 
 /* Header */
@@ -95,7 +103,10 @@ body.dark-mode .header {
   color: var(--text-dark);
 }
 
-body.dark-mode .note-container,
+body.dark-mode .stats{
+  color: var(--text-dark);
+}
+
 body.dark-mode .note-title {
   background-color: #444;
   color: var(--text-dark);
@@ -117,6 +128,7 @@ body.dark-mode .dark-mode-btn {
 }
 
 body.dark-mode .note-container {
+  background-color: #444;
   color: var(--text-light);
 }
 
@@ -191,6 +203,14 @@ body.dark-mode .note-container {
   opacity: 1;
 }
 
+.stats{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
 /* Text container */
 .text-container {
   display: flex;
@@ -227,7 +247,7 @@ body.dark-mode .note-container {
   transition: 0.3s;
 }
 
-.complete-checkbox{
+.complete-checkbox {
   width: 18px;
   height: 18px;
   cursor: pointer;

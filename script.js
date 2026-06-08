@@ -192,7 +192,6 @@ function updateLiveTime() {
     year: "numeric",
   });
   liveTime.textContent = now.toLocaleTimeString("id-ID");
-  console.log("Haloo")
 }
 
 function updateStats() {

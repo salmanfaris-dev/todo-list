@@ -98,12 +98,27 @@ body.dark-mode {
   cursor: pointer;
 }
 
+body.dark-mode .dark-mode-btn {
+  background-color: var(--bg-light);
+}
+
 body.dark-mode .header {
   background-color: #333;
   color: var(--text-dark);
 }
 
-body.dark-mode .stats{
+body.dark-mode .title {
+  background: linear-gradient(135deg, #fef9ff, #f1f4fe);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+body.dark-mode .live-date,
+body.dark-mode .live-time {
+  color: var(--text-dark);
+}
+
+body.dark-mode .stats {
   color: var(--text-dark);
 }
 
@@ -115,16 +130,6 @@ body.dark-mode .note-title {
 body.dark-mode .list {
   background-color: #555;
   color: var(--text-dark);
-}
-
-body.dark-mode .title {
-  background: linear-gradient(135deg, #fef9ff, #f1f4fe);
-  background-clip: text;
-  -webkit-background-clip: text;
-}
-
-body.dark-mode .dark-mode-btn {
-  background-color: var(--bg-light);
 }
 
 body.dark-mode .note-container {
@@ -140,6 +145,11 @@ body.dark-mode .note-container {
   background: linear-gradient(180deg, #0f172a, #475569);
   color: transparent;
   background-clip: text;
+}
+
+.live-date,
+.live-time {
+  margin-left: 1rem;
 }
 
 .form {
@@ -173,6 +183,15 @@ body.dark-mode .note-container {
   outline: 2px solid #6366f1;
 }
 
+.stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
 .note-list {
   margin: 2rem 0;
 }
@@ -183,7 +202,6 @@ body.dark-mode .note-container {
 }
 
 .list {
-  width: 100%;
   padding: 1rem 1.5rem;
   background-color: white;
   border-radius: 2rem;
@@ -200,17 +218,8 @@ body.dark-mode .note-container {
   opacity: 1;
 }
 
-.stats{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-}
-
 /* List container */
-.list-container{
+.list-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -297,11 +306,23 @@ body.dark-mode .note-container {
 }
 
 /* Date container */
-.date-element{
+.date-element {
   font-size: 0.8rem;
 }
 
 /* Utility */
 .ml-8 {
   margin-left: 1rem;
+}
+
+@media (min-width: 768px) {
+  .note-container {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .note-container {
+    max-width: 750px;
+  }
 }

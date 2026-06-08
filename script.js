@@ -2,8 +2,17 @@ const getId = (id) => document.getElementById(id);
 const noteInput = getId("noteInput");
 const noteBtn = getId("noteBtn");
 const noteList = getId("noteList");
-const darkModeBtn = getId("darkModeBtn");
 const noteTitle = getId("noteTitle");
+
+const darkModeBtn = getId("darkModeBtn");
+
+const totalNotesElement = getId("totalNotes");
+const remainingNotesElement = getId("remainingNotes");
+const completedNotesElement = getId("completedNotes");
+
+const liveDate = getId("liveDate");
+const liveTime = getId("liveTime");
+
 const createElement = (element) => document.createElement(element);
 
 if (localStorage.getItem("darkMode") === "true") {
@@ -169,22 +178,24 @@ notes.forEach((note) => {
   const li = createNoteElement(note);
   noteList.appendChild(li);
 });
+updateLiveTime()
+setInterval(updateLiveTime, 1000);
 updateStats();
 updateNoteTitle();
 
-function updateNoteTitle() {
-  if (notes.length > 0) {
-    noteTitle.textContent = "Catatan Saya";
-  } else {
-    noteTitle.textContent = "";
-  }
+function updateLiveTime() {
+  const now = new Date();
+  liveDate.textContent = now.toLocaleString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  liveTime.textContent = now.toLocaleTimeString("id-ID");
+  console.log("Haloo")
 }
 
 function updateStats() {
-  const totalNotesElement = getId("totalNotes");
-  const remainingNotesElement = getId("remainingNotes");
-  const completedNotesElement = getId("completedNotes");
-
   const totalNotes = notes.length;
   const remainingNotes = notes.filter((note) => !note.completed).length;
   const completedNotes = notes.filter((note) => note.completed).length;
@@ -192,6 +203,14 @@ function updateStats() {
   totalNotesElement.textContent = `📝 Total: ${totalNotes}`;
   remainingNotesElement.textContent = `⏳ Remaining: ${remainingNotes}`;
   completedNotesElement.textContent = `✅ completed: ${completedNotes}`;
+}
+
+function updateNoteTitle() {
+  if (notes.length > 0) {
+    noteTitle.textContent = "Catatan Saya";
+  } else {
+    noteTitle.textContent = "";
+  }
 }
 
 function addNote(e) {

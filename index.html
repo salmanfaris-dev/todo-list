@@ -30,15 +30,22 @@
             <p id="liveTime" class="live-time"></p>
             <h1 class="title">Latihan Dasar</h1>
             <form class="form" action="">
-              <input
-                type="text"
-                id="noteInput"
-                class="note-input"
-                placeholder="Tulis Catatan Anda..."
-              />
-              <button class="btn" id="noteBtn">Tambah</button>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  id="noteInput"
+                  class="note-input"
+                  placeholder="Tulis Catatan Anda..."
+                  maxlength="100"
+                />
+                <button class="btn" id="noteBtn">Tambah</button>
+              </div>
+              <p id="characterCounter" class="character-counter">0/100</p>
             </form>
             <div>
+              <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari Catatan..." />
+              </div>
               <div class="stats">
                 <span id="totalNotes"></span>
                 <span id="remainingNotes"></span>

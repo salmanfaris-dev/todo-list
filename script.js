@@ -6,12 +6,16 @@ const noteTitle = getId("noteTitle");
 
 const darkModeBtn = getId("darkModeBtn");
 
+const characterCounter = getId("characterCounter");
+
 const totalNotesElement = getId("totalNotes");
 const remainingNotesElement = getId("remainingNotes");
 const completedNotesElement = getId("completedNotes");
 
 const liveDate = getId("liveDate");
 const liveTime = getId("liveTime");
+
+const searchInput = getId("searchInput");
 
 const createElement = (element) => document.createElement(element);
 
@@ -174,15 +178,6 @@ function createNoteElement(note) {
   return li;
 }
 
-notes.forEach((note) => {
-  const li = createNoteElement(note);
-  noteList.appendChild(li);
-});
-updateLiveTime()
-setInterval(updateLiveTime, 1000);
-updateStats();
-updateNoteTitle();
-
 function updateLiveTime() {
   const now = new Date();
   liveDate.textContent = now.toLocaleString("id-ID", {
@@ -194,6 +189,11 @@ function updateLiveTime() {
   liveTime.textContent = now.toLocaleTimeString("id-ID");
 }
 
+function counterText() {
+  const currentText = noteInput.value.length;
+  characterCounter.textContent = `${currentText}/100`;
+}
+
 function updateStats() {
   const totalNotes = notes.length;
   const remainingNotes = notes.filter((note) => !note.completed).length;
@@ -202,6 +202,32 @@ function updateStats() {
   totalNotesElement.textContent = `📝 Total: ${totalNotes}`;
   remainingNotesElement.textContent = `⏳ Remaining: ${remainingNotes}`;
   completedNotesElement.textContent = `✅ completed: ${completedNotes}`;
+}
+
+function renderNotes(notesArray) {
+  noteList.innerHTML = "";
+
+  notesArray.forEach((note) => {
+    const li = createNoteElement(note);
+    noteList.appendChild(li);
+  });
+}
+renderNotes(notes);
+
+updateLiveTime();
+counterText();
+setInterval(updateLiveTime, 1000);
+updateStats();
+updateNoteTitle();
+
+searchInput.addEventListener("input", filteredNotes);
+
+function filteredNotes() {
+  const searchText = searchInput.value.trim();
+  const filteredNotes = notes.filter((note) =>
+    note.text.toLowerCase().includes(searchText.toLowerCase()),
+  );
+  renderNotes(filteredNotes);
 }
 
 function updateNoteTitle() {
@@ -223,15 +249,17 @@ function addNote(e) {
   };
   if (!noteText) return;
 
-  const li = createNoteElement(newNote);
-  noteList.appendChild(li);
-
   notes.push(newNote);
+  filteredNotes();
   saveNotes();
+
   noteInput.value = "";
+  counterText();
   updateStats();
   updateNoteTitle();
 }
+
+noteInput.addEventListener("input", counterText);
 
 noteBtn.addEventListener("click", addNote);
 

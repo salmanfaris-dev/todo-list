@@ -2,7 +2,7 @@ const getId = (id) => document.getElementById(id);
 const noteInput = getId("noteInput");
 const noteBtn = getId("noteBtn");
 const noteList = getId("noteList");
-const noteTitle = getId("noteTitle");
+const noteEmpty = getId("noteEmpty");
 
 const darkModeBtn = getId("darkModeBtn");
 
@@ -172,7 +172,7 @@ function createNoteElement(note) {
 
     saveNotes();
     updateStats();
-    updateNoteTitle();
+    updateNoteEmpty();
   });
 
   return li;
@@ -218,45 +218,53 @@ updateLiveTime();
 counterText();
 setInterval(updateLiveTime, 1000);
 updateStats();
-updateNoteTitle();
+updateNoteEmpty();
 
-searchInput.addEventListener("input", filteredNotes);
-
-function filteredNotes() {
+function searchNotes() {
   const searchText = searchInput.value.trim();
   const filteredNotes = notes.filter((note) =>
     note.text.toLowerCase().includes(searchText.toLowerCase()),
   );
+  updateSearchEmpty(filteredNotes);
   renderNotes(filteredNotes);
 }
 
-function updateNoteTitle() {
-  if (notes.length > 0) {
-    noteTitle.textContent = "Catatan Saya";
+function updateSearchEmpty(notesArray) {
+  if (notesArray.length === 0) {
+    noteEmpty.textContent = "Tidak ada catatan yang ditemukan";
   } else {
-    noteTitle.textContent = "";
+    noteEmpty.textContent = "";
+  }
+}
+
+searchInput.addEventListener("input", searchNotes);
+
+function updateNoteEmpty() {
+  if (notes.length === 0) {
+    noteEmpty.textContent = "Tidak ada catatan";
+  } else {
+    noteEmpty.textContent = "";
   }
 }
 
 function addNote(e) {
   e.preventDefault();
   const noteText = noteInput.value.trim();
+  if (!noteText) return;
   const newNote = {
     id: Date.now(),
     text: noteText,
     completed: false,
     createdAt: Date.now(),
   };
-  if (!noteText) return;
 
   notes.push(newNote);
-  filteredNotes();
+  searchNotes();
   saveNotes();
 
   noteInput.value = "";
   counterText();
   updateStats();
-  updateNoteTitle();
 }
 
 noteInput.addEventListener("input", counterText);

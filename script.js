@@ -16,6 +16,7 @@ const liveDate = getId("liveDate");
 const liveTime = getId("liveTime");
 
 const searchInput = getId("searchInput");
+const sortSelect = getId("sortSelect");
 
 const createElement = (element) => document.createElement(element);
 
@@ -218,6 +219,7 @@ updateLiveTime();
 counterText();
 setInterval(updateLiveTime, 1000);
 updateStats();
+sortNotes();
 updateNoteEmpty();
 
 function searchNotes() {
@@ -237,8 +239,6 @@ function updateSearchEmpty(notesArray) {
   }
 }
 
-searchInput.addEventListener("input", searchNotes);
-
 function updateNoteEmpty() {
   if (notes.length === 0) {
     noteEmpty.textContent = "Tidak ada catatan";
@@ -246,6 +246,24 @@ function updateNoteEmpty() {
     noteEmpty.textContent = "";
   }
 }
+
+function sortNotes() {
+  if (sortSelect.value === "newest") {
+    notes.sort((a, b) => b.createdAt - a.createdAt);
+  } else if (sortSelect.value === "oldest") {
+    notes.sort((a, b) => a.createdAt - b.createdAt);
+  } else if (sortSelect.value === "az") {
+    notes.sort((a, b) => a.text.localeCompare(b.text));
+  } else if (sortSelect.value === "za") {
+    notes.sort((a, b) => b.text.localeCompare(a.text));
+  }
+
+  renderNotes(notes);
+}
+
+
+searchInput.addEventListener("input", searchNotes);
+sortSelect.addEventListener("change", sortNotes);
 
 function addNote(e) {
   e.preventDefault();

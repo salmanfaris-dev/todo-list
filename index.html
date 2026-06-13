@@ -38,13 +38,25 @@
                   placeholder="Tulis Catatan Anda..."
                   maxlength="100"
                 />
-                <button class="btn" id="noteBtn">Tambah</button>
+                <button class="btn btn-primary" id="noteBtn">Tambah</button>
               </div>
               <p id="characterCounter" class="character-counter">0/100</p>
             </form>
             <div>
               <div class="search-wrapper">
-                <input type="text" id="searchInput" class="search-input" placeholder="Cari Catatan..." />
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="search-input"
+                  placeholder="Cari Catatan..."
+                  maxlength="50"
+                />
+                  <select class="sort-select" id="sortSelect">
+                    <option value="newest" selected>Terbaru</option>
+                    <option value="oldest">Terlama</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                  </select>
               </div>
               <div class="stats">
                 <span id="totalNotes"></span>

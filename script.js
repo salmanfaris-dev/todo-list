@@ -48,6 +48,40 @@ function createButton(text, ...classNames) {
   return button;
 }
 
+function createCheckbox(note) {
+  const checkbox = createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.classList.add("complete-checkbox");
+  checkbox.checked = note.completed;
+  checkbox.id = `complete-${note.id}`;
+  checkbox.name = `complete-${note.id}`;
+
+  return checkbox;
+}
+
+function createTextSpan(note) {
+  const span = createElement("span");
+  span.classList.add("text-span");
+  span.textContent = note.text;
+
+  if (note.completed) {
+    span.classList.add("completed");
+  }
+
+  return span;
+}
+
+function createDateElement(note) {
+  const date = new Date(note.createdAt);
+  const formattedDate = date.toLocaleString("id-ID");
+
+  const dateText = createElement("p");
+  dateText.classList.add("date-text");
+  dateText.textContent = formattedDate;
+
+  return dateText;
+}
+
 function createNoteElement(note) {
   const li = createElement("li");
   li.classList.add("list", "list-animation");
@@ -58,36 +92,17 @@ function createNoteElement(note) {
   const textContainer = createElement("div");
   textContainer.classList.add("text-container");
 
-  const completeCheckbox = createElement("input");
-  completeCheckbox.type = "checkbox";
-  completeCheckbox.classList.add("complete-checkbox");
-  completeCheckbox.checked = note.completed;
-  completeCheckbox.id = `complete-${note.id}`;
-  completeCheckbox.name = `complete-${note.id}`;
-
-  const span = createElement("span");
-  span.classList.add("text-span");
-  span.textContent = note.text;
-
-  if (note.completed) {
-    span.classList.add("completed");
-  }
-
   const buttonContainer = createElement("div");
   buttonContainer.classList.add("button-container");
 
+  const completeCheckbox = createCheckbox(note);
+  const span = createTextSpan(note);
   const editBtn = createButton("✏️", "button-action", "action-hover", "ml-8");
   const deleteBtn = createButton("❌", "button-action", "action-hover");
+  const dateElement = createDateElement(note);
 
   const dateContainer = createElement("div");
   dateContainer.classList.add("date-container");
-
-  const date = new Date(note.createdAt);
-  const formattedDate = date.toLocaleString("id-ID");
-
-  const dateElement = createElement("p");
-  dateElement.classList.add("date-element");
-  dateElement.textContent = formattedDate;
 
   li.appendChild(listContainer);
   listContainer.appendChild(textContainer);
@@ -261,7 +276,6 @@ function sortNotes() {
   renderNotes(notes);
 }
 
-
 searchInput.addEventListener("input", searchNotes);
 sortSelect.addEventListener("change", sortNotes);
 
@@ -277,10 +291,11 @@ function addNote(e) {
   };
 
   notes.push(newNote);
+  noteInput.value = "";
+  
   searchNotes();
   saveNotes();
-
-  noteInput.value = "";
+  sortNotes()
   counterText();
   updateStats();
 }
